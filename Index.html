@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mageba Business Manager</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="logo">
+                <h2>Mageba</h2>
+                <span>Business Manager</span>
+            </div>
+
+            <nav>
+                <button onclick="showSection('dashboard')" class="nav-btn active">
+                    Dashboard
+                </button>
+
+                <button onclick="showSection('employees')" class="nav-btn">
+                    Employees
+                </button>
+
+                <button onclick="showSection('assets')" class="nav-btn">
+                    IT Assets
+                </button>
+
+                <button onclick="showSection('repairs')" class="nav-btn">
+                    Repairs
+                </button>
+            </nav>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main">
+
+            <header class="topbar">
+                <div>
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p>Business management system</p>
+                </div>
+
+                <div class="user">
+                    <div class="avatar">M</div>
+                    <span>Administrator</span>
+                </div>
+            </header>
+
+
+            <!-- DASHBOARD -->
+            <section id="dashboard" class="section">
+
+                <div class="cards">
+
+                    <div class="card">
+                        <span>Total Employees</span>
+                        <h2 id="employeeCount">0</h2>
+                    </div>
+
+                    <div class="card">
+                        <span>Total IT Assets</span>
+                        <h2 id="assetCount">0</h2>
+                    </div>
+
+                    <div class="card">
+                        <span>Active Repairs</span>
+                        <h2 id="repairCount">0</h2>
+                    </div>
+
+                    <div class="card">
+                        <span>System Status</span>
+                        <h2 class="online">Online</h2>
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h2>Recent Activity</h2>
+                    </div>
+
+                    <div id="activityList">
+                        <p class="empty">
+                            No activity yet.
+                        </p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- EMPLOYEES -->
+            <section id="employees" class="section hidden">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h2>Employees</h2>
+
+                        <button class="primary-btn"
+                                onclick="openModal('employeeModal')">
+                            + Add Employee
+                        </button>
+                    </div>
+
+                    <input
+                        type="text"
+                        id="employeeSearch"
+                        class="search"
+                        placeholder="Search employees..."
+                        onkeyup="displayEmployees()"
+                    >
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Department</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="employeeTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ASSETS -->
+            <section id="assets" class="section hidden">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>IT Assets</h2>
+
+                        <button class="primary-btn"
+                                onclick="openModal('assetModal')">
+                            + Add Asset
+                        </button>
+
+                    </div>
+
+                    <input
+                        type="text"
+                        id="assetSearch"
+                        class="search"
+                        placeholder="Search assets..."
+                        onkeyup="displayAssets()"
+                    >
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>Asset ID</th>
+                                    <th>Device</th>
+                                    <th>Serial Number</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="assetTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- REPAIRS -->
+            <section id="repairs" class="section hidden">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>Repairs</h2>
+
+                        <button class="primary-btn"
+                                onclick="openModal('repairModal')">
+                            + Add Repair
+                        </button>
+
+                    </div>
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Asset</th>
+                                    <th>Problem</th>
+                                    <th>Technician</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="repairTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- EMPLOYEE MODAL -->
+
+    <div id="employeeModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close"
+                  onclick="closeModal('employeeModal')">
+                &times;
+            </span>
+
+            <h2>Add Employee</h2>
+
+            <form id="employeeForm">
+
+                <input
+                    type="text"
+                    id="employeeName"
+                    placeholder="Full Name"
+                    required
+                >
+
+                <input
+                    type="email"
+                    id="employeeEmail"
+                    placeholder="Email Address"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="employeeDepartment"
+                    placeholder="Department"
+                    required
+                >
+
+                <button class="primary-btn">
+                    Add Employee
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ASSET MODAL -->
+
+    <div id="assetModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close"
+                  onclick="closeModal('assetModal')">
+                &times;
+            </span>
+
+            <h2>Add IT Asset</h2>
+
+            <form id="assetForm">
+
+                <input
+                    type="text"
+                    id="assetId"
+                    placeholder="Asset ID"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="assetDevice"
+                    placeholder="Device / Model"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="assetSerial"
+                    placeholder="Serial Number"
+                    required
+                >
+
+                <select id="assetStatus">
+
+                    <option value="Active">
+                        Active
+                    </option>
+
+                    <option value="Repair">
+                        Under Repair
+                    </option>
+
+                    <option value="Inactive">
+                        Inactive
+                    </option>
+
+                </select>
+
+                <button class="primary-btn">
+                    Add Asset
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- REPAIR MODAL -->
+
+    <div id="repairModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close"
+                  onclick="closeModal('repairModal')">
+                &times;
+            </span>
+
+            <h2>Add Repair</h2>
+
+            <form id="repairForm">
+
+                <input
+                    type="text"
+                    id="repairAsset"
+                    placeholder="Asset ID"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="repairProblem"
+                    placeholder="Problem"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="repairTechnician"
+                    placeholder="Technician"
+                    required
+                >
+
+                <select id="repairStatus">
+
+                    <option value="Pending">
+                        Pending
+                    </option>
+
+                    <option value="In Progress">
+                        In Progress
+                    </option>
+
+                    <option value="Completed">
+                        Completed
+                    </option>
+
+                </select>
+
+                <button class="primary-btn">
+                    Add Repair
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
